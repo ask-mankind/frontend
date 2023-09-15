@@ -9,19 +9,19 @@ const EntryPage = () => {
 
 const selectedEntry = useSelector(state => state.entries.selectedEntry)
 
-const dispatch = useDispatch()
+// const dispatch = useDispatch()
   
-
-useEffect(() => {
-return () => {
- dispatch(setSelectedEntry(null))
-}
-});
+// useEffect(() => {
+// return () => {
+//  dispatch(setSelectedEntry(null))
+// }
+// });
 
 
   return (
     <div className="container mx-auto mt-4 width-auto">
-      <h1 className="text-2xl font-semibold mb-4">{selectedEntry.title}</h1>
+      <h1 className="text-2xl font-semibold mb-4">{selectedEntry.content}</h1>
+      {console.log(selectedEntry)}
       <SelectedEntry entry={selectedEntry} />
     </div>
   );

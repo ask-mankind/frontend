@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/auth";
-
+import { useState } from "react";
+import { setFilteredEntries } from "../store/entries";
 const Header = ({ onSearchInputChange }) => {
   const user = useSelector((state) => state.auth.user);
 
@@ -40,6 +41,32 @@ dispatch(setUser(null))
       </div>
     );
   }
+
+  const entryData = useSelector(state => state.entries.entries);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  
+  const handleSearchInputChange = (event) => {
+    const newSearchQuery = event.target.value;
+
+    let filteredEntries = entryData.filter(entry =>
+      entry.title.toLowerCase().includes(newSearchQuery.toLowerCase())
+    ); 
+  
+    if(searchQuery != null && filteredEntries[0]==null){
+      filteredEntries = [{
+        user: "Not Found",
+        id:Date.now(),
+        title: "Search Not Found",
+        timestamps: Date.now(),
+      },]
+    }
+    setSearchQuery(newSearchQuery);
+    console.log(newSearchQuery); // Use the updated value directly
+    dispatch(setFilteredEntries(filteredEntries));
+
+  };
+
   return (
     <header className="bg-lilac p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -59,8 +86,9 @@ dispatch(setUser(null))
         <div className="relative">
           <input
             type="text"
+            value={searchQuery}
             placeholder="Search..."
-            onChange={onSearchInputChange}
+            onChange={handleSearchInputChange}
             className="bg-white text-gray-700 rounded-full pl-10 pr-4 py-2 focus:outline-none focus:ring focus:ring-lilac"
           />
           <span className="absolute left-3 top-2">

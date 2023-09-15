@@ -22,10 +22,10 @@ const Comment = ({ comments }) => {
       className="bg-white p-2 mb-2 border rounded shadow"
       key={comments[0]?.id}
     >
-      <p className="text-gray-500">{comments[0]?.content}</p>
+      <p className="text-gray-500">{comments[0]?.comment}</p>
       <div className="flex justify-between items-center mt-2">
         <div className="flex items-center">
-        <span className="mr-2  text-gray-500">{comments[0]?.likes}</span>
+        <span className="mr-2  text-gray-500">{comments[0]?.likes.length}</span>
           <button
             className={`mr-2 text-gray-500 hover:text-blue-500 ${
               liked ? "text-blue-500" : ""
@@ -35,7 +35,7 @@ const Comment = ({ comments }) => {
             <FaThumbsUp /> 
           </button>
         </div>
-        <div className="text-gray-500">{comments[0]?.timeStamp}</div>
+        <div className="text-gray-500">timestamps</div>
       </div>
     </div>
   );

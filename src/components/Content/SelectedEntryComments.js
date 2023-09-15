@@ -17,18 +17,15 @@ const SelectedEntryComments = () => {
 
     const comments = useSelector(state => state.entries.selectedEntry.comments)
 
-    useEffect(() => {
-      console.log(comments)
-    },[comments]);
   
   
     return (
       comments.map ( comment =>
       <div className="bg-white p-2 mb-2 border rounded shadow" key={comment?.id}>
-        <p className="text-gray-500">{comment?.content}</p>
+        <p className="text-gray-500">{comment?.comment}</p>
         <div className="flex justify-between items-center mt-2">
           <div className="flex items-center">
-          <span className="mr-2  text-gray-500">{comment?.likes}</span>
+          <span className="mr-2  text-gray-500">likes </span>
             <button
               className={`mr-2 text-gray-500 hover:text-blue-500 ${
                 liked ? 'text-blue-500' : ''
@@ -38,7 +35,7 @@ const SelectedEntryComments = () => {
               <FaThumbsUp /> 
             </button>
           </div>
-          <div className="text-gray-500">{comment?.timeStamp}</div>
+          <div className="text-gray-500">timestamps</div>
         </div>
       </div>
       )

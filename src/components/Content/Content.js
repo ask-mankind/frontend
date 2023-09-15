@@ -1,9 +1,11 @@
 import Entry from "./Entry.js";
 import { useSelector } from "react-redux";
-
+import { useEffect } from "react";
+import axios from "axios";
 
 const Content = () => {
 
+  
 
 let entryData = []
 const allEntries = useSelector(state => state.entries.entries)
