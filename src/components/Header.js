@@ -8,6 +8,7 @@ import { useState } from "react";
 import { setFilteredEntries } from "../store/entries";
 import { logoutUser } from "../store/auth";
 import { getAuthUser } from "../utils/authentication";
+import { useEffect } from "react";
 const Header = ({ onSearchInputChange }) => {
   
   const user = getAuthUser()
@@ -99,7 +100,7 @@ navigate("/")
         </div>
 
         {/* Search Box */}
-        <div className="relative">
+       <div className="relative">
           <input
             type="text"
             value={searchQuery}

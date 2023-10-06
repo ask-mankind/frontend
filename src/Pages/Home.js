@@ -9,11 +9,12 @@ const Home = () => {
     console.log(localStorage.getItem("ahkUser"))
   });
 
+
   return (
     <div>
       <Header />
       <div className="flex flex-row space-x-5 mr-5">
-        <Navbar />
+        {/* <Navbar /> */}
         <Outlet />
         <AddEntryButton />
       </div>
