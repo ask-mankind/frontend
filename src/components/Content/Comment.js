@@ -24,27 +24,26 @@ const Comment = ({ comments }) => {
     >
       <p className="text-gray-500">{comments[0]?.comment}</p>
       <div className="flex justify-between items-center mt-2">
-        <div className="flex items-center">
-        <span className="mr-2  text-gray-500">{comments[0]?.likes.length}</span>
+        {/* <div className="flex items-center">
+          <span className="mr-2  text-gray-500">
+            {comments[0]?.likes.length}
+          </span>
           <button
             className={`mr-2 text-gray-500 hover:text-blue-500 ${
               liked ? "text-blue-500" : ""
             }`}
             onClick={handleLike}
           >
-            <FaThumbsUp /> 
+            <FaThumbsUp />
           </button>
-        </div>
-        <div className="text-gray-500">timestamps</div>
+        </div> */}
+          <div>by {comments[0]?.author.user}</div>
+          <div className="text-gray-500">timestamps</div>
       </div>
     </div>
   );
 
-  return (
-    <div>
-    {comments[0] && commentComponent}
-  </div>
-    );
+  return <div>{comments[0] && commentComponent}</div>;
 };
 
 export default Comment;

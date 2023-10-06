@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SelectedEntryComments from "./SelectedEntryComments"; 
+import SelectedEntryCommentList from "./SelectedEntryCommentList"; 
 import MakeComment from "./MakeComment";
 
 const SelectedEntry = ({ entry }) => {
@@ -14,7 +14,7 @@ const SelectedEntry = ({ entry }) => {
     setLiked(!liked);
 
   };
-  
+
 
   const handleTagClick = (tag) => {
     console.log(entry.comments);
@@ -24,10 +24,10 @@ const SelectedEntry = ({ entry }) => {
 
 
   return (
-      <div className="flex flex-col  mt-3" key={entry.id}>
+      <div className="flex flex-col  mt-3">
         <div className="flex items-center mb-2"> 
-        {entry.tags.map((tag) => (
-              <div id = {tag.id}
+        {entry?.tags?.map((tag) => (  
+              <div key = {tag._id}
                 onClick={() => handleTagClick(tag)}
                 className="text-blue-500 text-md hover:cursor-pointer hover:underline mr-1"
               > 
@@ -36,8 +36,11 @@ const SelectedEntry = ({ entry }) => {
             ))}
 
         </div>
-        <SelectedEntryComments/>
-        <div className="text-gray-500">timestamps</div>
+        <SelectedEntryCommentList entry={entry}/>
+        <div className="flex flex-col space-y-2">
+              <div>by {entry?.author?.username}</div>
+              <div className="text-gray-500">timestamps</div>
+            </div>
         <MakeComment entry={entry} />
       </div>
   );

@@ -1,15 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { setSelectedEntry } from "../store/entries";
-import { useDispatch } from "react-redux";
 
 const Navbar = () => {
-  const dispatch = useDispatch();
 
-  const handleEntryClick = (entry) => {
-    dispatch(setSelectedEntry(entry));
-  };
+  // const handleEntryClick = (entry) => {
+  //   dispatch(setSelectedEntry(entry));
+  // };
 
 
 
@@ -25,11 +22,11 @@ const Navbar = () => {
       <div className="container mx-auto flex flex-col items-start p-4">
         {/* Trending Entries (Vertical on the Left) */}
         <ul className="space-y-2">
-          {entries.map((entry, index) => (
-            <li key={index} onClick={() => handleEntryClick(entry)}>
+          {entries.map((entry) => (
+            <li key={entry._id} >
               {entry && entry.content && (
                 <Link
-                  to={`/${titleToUrlFormat(entry.content)}`}
+                to={`/${entry._id}`}
                   className="text-gray-700 hover:text-lilac transition duration-300"
                 >
                   {entry.content}

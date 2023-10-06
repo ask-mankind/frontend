@@ -2,19 +2,23 @@ import React from "react";
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setComments } from "../../store/entries";
-import { useSelector } from "react-redux";
+import { postComment } from "../../store/comments";
+import { useEffect } from "react";
+import { getAuthToken } from "../../utils/authentication";
+import { useNavigate } from "react-router-dom";
 
-const MakeComment = ({entry}) => {
-
-
+const MakeComment = ({ entry }) => {
   const [isCommenting, setIsCommenting] = useState(false);
   const [commentText, setCommentText] = useState("");
   const dispatch = useDispatch();
 
   const handleCommentClick = () => {
     setIsCommenting(!isCommenting);
-    setCommentText("")
+    setCommentText("");
+    const token = getAuthToken()
+    if(!token){
+      navigate("/login")
+    }
 
   };
 
@@ -23,26 +27,20 @@ const MakeComment = ({entry}) => {
     console.log(commentText);
   };
 
-  const handleSaveComment = (id) => {
+  const navigate = useNavigate()
+
+
+
+  const handleSaveComment = () => {
     // Create a new comment object
-    const comment = {
-      user: "CurrentUser", // Replace with the actual user's name
-      id: Date.now(), // Generate a unique ID (you can use a library like uuid for more robust IDs)
-      content: commentText,
-      likes: 0,
-      tags: [],
-      timestamps: new Date().toLocaleTimeString(),
+    const commentData = {
+      entryId: entry._id,
+      comment: commentText,
     };
 
     // Dispatch the action to add the new comment to Redux state
-    dispatch(
-      setComments({
-        entryId: id,
-        newComment: comment,
-      })
-    );
-    
-    console.log(entry.comments)
+    dispatch(postComment(commentData));
+
     // Clear the comment input and close the comment area
     setCommentText("");
     setIsCommenting(false);
@@ -50,7 +48,7 @@ const MakeComment = ({entry}) => {
 
   return (
     <div>
-      {isCommenting ? (
+      {isCommenting ?  (
         <div className="mt-4">
           <textarea
             value={commentText}
@@ -60,7 +58,7 @@ const MakeComment = ({entry}) => {
             className="w-full border rounded-md p-2 focus:outline-none focus:border-blue-500"
           ></textarea>
           <button
-            onClick={() => handleSaveComment(entry.id)}
+            onClick={() => handleSaveComment()}
             className="mt-2 bg-lilac hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-md cursor-pointer mr-10"
           >
             Save Comment

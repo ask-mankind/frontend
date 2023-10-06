@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setEntries } from '../store/entries';
 import { useNavigate } from 'react-router-dom';
+import { postEntry } from '../store/entries';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { checkAuthLoader, getAuthToken } from '../utils/authentication';
 
 const AddEntryPage = () => {
   const [title, setTitle] = useState('');
@@ -12,26 +16,40 @@ const AddEntryPage = () => {
     setTitle(e.target.value);
   };
 
+
   const handleTagsChange = (e) => {
     setTags(e.target.value);
   };
+  const user = useSelector(state => state.user)
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+      const token = getAuthToken()
+      if(!token){
+        navigate("/login")
+      }
+  });
+  
+  const createNewEntry = async (newEntryData) => {
+    try {
+       dispatch(postEntry(newEntryData));
+      // After the entry is successfully posted, you can take any additional actions as needed.
+    } catch (error) {
+      // Handle errors here
+    }
+  };
+  
 
   const handleAddEntry = () => {
     // Create a new entry object with title and tags
     const newEntry = {
-      user: 'CurrentUser', // Replace with the actual user's name
-      id: Date.now(), // Generate a unique ID (you can use a library like uuid for more robust IDs)
-      title: title,
+      content: title,
       tags: tags.split(',').map((tag) => tag.trim()), // Split and trim tags
-      comments: [],
-      likes: 0,
-      timestamps: new Date().toLocaleTimeString(),
     };
 
     // Dispatch the action to add the new entry to Redux state
-    dispatch(setEntries(newEntry));
+    createNewEntry(newEntry)
     navigate("/")
 
     // Navigate back to the home page or any other desired route

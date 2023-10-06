@@ -1,18 +1,26 @@
 import React from "react";
 import { FaSearch } from "react-icons/fa"; // Import the search icon from a package like react-icons
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/auth";
 import { useState } from "react";
 import { setFilteredEntries } from "../store/entries";
+import { logoutUser } from "../store/auth";
+import { getAuthUser } from "../utils/authentication";
 const Header = ({ onSearchInputChange }) => {
-  const user = useSelector((state) => state.auth.user);
+  
+  const user = getAuthUser()
 
   const dispatch = useDispatch()
+  const token = localStorage.getItem("token")
+
+  const navigate = useNavigate()
 
 const logOut = () => {
-dispatch(setUser(null))
+dispatch(logoutUser())
+navigate("/")
+
 }
 
   let rigthSideOfHeader = (
@@ -26,15 +34,15 @@ dispatch(setUser(null))
     </div>
   );
 
-  if (user) {
+  if (token) {
     rigthSideOfHeader = (
       <div>
-        <div className="text-white mr-4 mb-2 text-center">Welcome, {user?.name}</div>
-        <Link to={`/profile/${user?.name}`} className="text-white hover:underline mr-4">
+        <div className="text-white mr-4 mb-2 text-center">Welcome, {user?.fullname}</div>
+        <Link to={`/profile/${user?.username}`} className="text-white hover:underline mr-4">
            Profile
         </Link>
         <button className="mr-4" onClick={logOut}>Logout</button>
-        <Link to={`/profile/${user?.name}/settings`} className="text-white hover:underline mr-4">
+        <Link to={`/profile/${user?.username}/settings`} className="text-white hover:underline mr-4">
            Settings
         </Link>
 
@@ -50,15 +58,23 @@ dispatch(setUser(null))
     const newSearchQuery = event.target.value;
 
     let filteredEntries = entryData.filter(entry =>
-      entry.title.toLowerCase().includes(newSearchQuery.toLowerCase())
+      entry.content.toLowerCase().includes(newSearchQuery.toLowerCase())
     ); 
   
     if(searchQuery != null && filteredEntries[0]==null){
       filteredEntries = [{
-        user: "Not Found",
-        id:Date.now(),
-        title: "Search Not Found",
-        timestamps: Date.now(),
+        content: "Not Found",
+        _id:Date.now(),
+        author:{
+          username:"not found",
+          _id:"not found"
+        },
+        tags:[
+          {name:"not found"}
+        ],
+        comments:[],
+
+
       },]
     }
     setSearchQuery(newSearchQuery);

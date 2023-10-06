@@ -1,26 +1,51 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from 'axios';
+import { getAuthToken, getAuthUser } from "../utils/authentication";
+import { toast } from "react-toastify";
 const initialState = {
-	users: [
-        {
-            fullName:"Alperen",
-            userName:"Hadacar",
-            email:"aalprnbzkrt@gmail.com",
-            password:"1111"
-        }
-    ]
-}
+  status: null,
+  user: null, // Store the authenticated user
+  error: null,
+};
 
+const token = getAuthToken()
+const config = {
+  headers: {
+    'Authorization': `Bearer ${token}`,
+  },
+};
 
-const users = createSlice({
-	name: 'users',
-	initialState,
-	reducers: {
-		setUsers: (state, action) => {
-            state.users.push(action.payload);
-		}
-	}
-})
+// Create a new async thunk action to handle user login
+export const updateUser = createAsyncThunk('users/updateUser', async (userData) => {
+  try {
+    console.log(userData)
+    const response = await axios.put('http://localhost:5000/api/users/update', userData,config);
+    const data = await response.data
+    localStorage.removeItem("ahkUser")
+    localStorage.setItem("ahkUser",JSON.stringify(userData))
+    return data; // Assuming the response contains user data after login
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-export const { setUser } = users.actions
-export default users.reducer
+const usersSlice = createSlice({
+  name: "users",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(updateUser.pending, (state) => {
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        console.log(state.user)
+        toast.success("User updated succesfully")
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        const message = action.payload.message
+        toast.error(message)
+      });
+  },
+});
+
+export default usersSlice.reducer;

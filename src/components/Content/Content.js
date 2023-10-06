@@ -1,8 +1,6 @@
-import Entry from "./Entry.js";
+import EntryList from "./EntryList.js";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import axios from "axios";
-
+import LoadingComponent from "../Loading.js";
 const Content = () => {
 
   
@@ -10,6 +8,7 @@ const Content = () => {
 let entryData = []
 const allEntries = useSelector(state => state.entries.entries)
 const filteredEntriesStored = useSelector(state => state.entries.filteredEntries)
+const status = useSelector(state=>state.entries.fetchStatus)
 
 
 if(filteredEntriesStored[0]){
@@ -18,13 +17,20 @@ if(filteredEntriesStored[0]){
    entryData = allEntries
 }
 
+if(status==="loading"){
+  return (
+    <div className="container mx-auto mt-4 width-auto">
+      <LoadingComponent />
+    </div>
+  );
+}
 
 
   return (
     <div className="container mx-auto mt-4 width-auto">
       <h1 className="text-2xl font-semibold mb-4">Current Entries</h1>
 
-      <Entry entries={entryData} />
+      <EntryList entries={entryData} />
 
     </div>
   );

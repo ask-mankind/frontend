@@ -1,20 +1,38 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
-
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../store/auth";
+import { useSelector } from "react-redux";
 const RegisterPage = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [userName, setUserName] = useState("");
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [registered, setRegistered] = useState(false);
 
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const status = useSelector((state) => state.auth.loginStatus);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Replace this with your registration logic
-    if (name && email && password) {
+    if (fullName && userName && email && password) {
       setRegistered(true);
     } else {
-      alert('Please fill in all fields to register.');
+      alert("Please fill in all fields to register.");
+    }
+    await dispatch(
+      registerUser({
+        fullname: fullName,
+        username: userName,
+        email: email,
+        password: password,
+      })
+    );
+    if (status === "succeeded") {
+      navigate("/");
     }
   };
 
@@ -22,8 +40,10 @@ const RegisterPage = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-lilac py-12 px-4 sm:px-6 lg:px-8">
       {/* App Name */}
       <Link to="/">
-      <h1 className="text-3xl font-extrabold text-white mb-8">            Ask - Mankind
-</h1>
+        <h1 className="text-3xl font-extrabold text-white mb-8">
+          {" "}
+          Ask - Mankind
+        </h1>
       </Link>
 
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
@@ -35,21 +55,38 @@ const RegisterPage = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-3">
             <div>
-              <label htmlFor="name" className="sr-only">
-                Name
+              <label htmlFor="Full Name" className="sr-only">
+                Full Name
               </label>
               <input
-                id="name"
-                name="name"
+                id="Full Name"
+                name="Full Name"
                 type="text"
-                autoComplete="name"
+                autoComplete="Full Name"
                 required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-lilac focus:border-lilac focus:z-10 sm:text-sm"
-                placeholder="Name"
+                placeholder="Full Name"
               />
             </div>
+            <div>
+              <label htmlFor="User Name" className="sr-only">
+                User Name
+              </label>
+              <input
+                id="User Name"
+                name="User Name"
+                type="text"
+                autoComplete="User Name"
+                required
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-lilac focus:border-lilac focus:z-10 sm:text-sm"
+                placeholder="User Name"
+              />
+            </div>
+
             <div>
               <label htmlFor="email-address" className="sr-only">
                 Email address
@@ -92,6 +129,18 @@ const RegisterPage = () => {
               Register
             </button>
           </div>
+          <div className="text-sm">
+            <span className="font-medium text-lg mx-6">
+              Do you have an account?
+            </span>
+            <Link
+              to="/login"
+              className="font-medium text-lg text-lilac hover:text-indigo-500"
+            >
+              Login
+            </Link>
+          </div>
+
         </form>
       </div>
     </div>

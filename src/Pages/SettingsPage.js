@@ -1,13 +1,31 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateUser } from '../store/users';
+import { logoutUser } from '../store/auth';
+import { useNavigate } from 'react-router-dom';
 
 const SettingsPage = () => {
-  const [newUsername, setNewUsername] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [newEmail, setNewEmail] = useState('');
+  const user = JSON.parse(localStorage.getItem("ahkUser"))
+
+  const [newUsername, setNewUsername] = useState(user.username);
+  const [newFullname, setNewFullname] = useState(user.fullname);
+  const [newEmail, setNewEmail] = useState(user.email);
+  const [newPassword, setNewPassword] = useState("");
+
+  const navigate = useNavigate()
+
+
+  const dispatch = useDispatch()
+
 
   const handleUsernameChange = (e) => {
     setNewUsername(e.target.value);
   };
+
+  const handleFullnameChange = (e) => {
+    setNewFullname(e.target.value);
+  };
+
 
   const handlePasswordChange = (e) => {
     setNewPassword(e.target.value);
@@ -18,8 +36,15 @@ const SettingsPage = () => {
   };
 
   const handleSaveChanges = () => {
-    // Implement logic to save changes to the server or Redux state
-    // You can dispatch an action to update user information
+    const newUser = {
+      fullname:newFullname,
+      username:newUsername,
+      email:newEmail,
+      password:newPassword
+    }
+     dispatch(updateUser(newUser))
+    navigate("/")
+
   };
 
   return (
@@ -38,14 +63,14 @@ const SettingsPage = () => {
         />
       </div>
       <div className="mb-4">
-        <label className=" text-gray-700 text-sm font-bold mb-2" htmlFor="newPassword">
-          New Password:
+        <label className=" text-gray-700 text-sm font-bold mb-2" htmlFor="newFullname">
+          New Full Name:
         </label>
         <input
-          type="password"
-          id="newPassword"
-          value={newPassword}
-          onChange={handlePasswordChange}
+          type="text"
+          id="newFullname"
+          value={newFullname}
+          onChange={handleFullnameChange}
           className="w-full p-2 border rounded"
         />
       </div>
@@ -61,6 +86,19 @@ const SettingsPage = () => {
           className="w-full p-2 border rounded"
         />
       </div>
+      <div className="mb-4">
+        <label className=" text-gray-700 text-sm font-bold mb-2" htmlFor="newPassword">
+          New Password:
+        </label>
+        <input
+          type="password"
+          id="newPassword"
+          value={newPassword}
+          onChange={handlePasswordChange}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
       <button
         onClick={handleSaveChanges}
         className="bg-lilac hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-md cursor-pointer"

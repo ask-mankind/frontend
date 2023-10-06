@@ -6,6 +6,8 @@ import EntryPage from "./Pages/EntryPage";
 import AddEntryPage from "./Pages/AddEntryPage";
 import ProfilePage from "./Pages/ProfilePage";
 import SettingsPage from "./Pages/SettingsPage";
+import { checkAuthLoader } from "./utils/authentication";
+import LogoutComponent from "./utils/LogoutComponent";
 
 const routes = [
   {
@@ -16,7 +18,7 @@ const routes = [
         element: <Content />,
       },
       {
-        path: "/:entryTitle",
+        path: "/:entryId",
         element: <EntryPage />,
       },
       {
@@ -38,6 +40,11 @@ const routes = [
     path: "/register",
     element: <RegisterPage />,
   },
+  {
+    path: "/logout",
+    element: <LogoutComponent />,
+
+  }
 ];
 
 export default routes;
