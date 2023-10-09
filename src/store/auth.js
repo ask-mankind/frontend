@@ -101,7 +101,7 @@ const auth = createSlice({
         const token = action.payload.token;
         localStorage.setItem("token", token);
         localStorage.setItem("ahkUser", JSON.stringify(user));
-        toast.success("Regisgered successfully.");
+        toast.success("Registered successfully.");
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.registerStatus = "failed";
