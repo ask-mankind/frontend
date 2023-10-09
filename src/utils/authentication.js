@@ -7,6 +7,7 @@ export function getAuthToken(){
 
 export function getAuthUser(){
     const user = JSON.parse(localStorage.getItem("ahkUser"));
+    console.log(user)
     return user
 }
 

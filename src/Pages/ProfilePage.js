@@ -1,27 +1,32 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import EntryList from "../components/Content/EntryList";
 import { useParams } from "react-router-dom";
 import UserNotFound from "../components/UserNotFound";
 import LoadingComponent from "../components/Loading";
+import { getAllUsers } from "../store/users";
+import { useEffect } from "react";
+import NoEntriesComponent from "../components/NoEntriesComponents";
 const ProfilePage = () => {
   const { username } = useParams();
+  const dispatch = useDispatch();
   const userEntries = useSelector((state) =>
     state.entries.entries.filter((entry) => entry.author.username === username)
   );
+  const users = useSelector((state) => state.users.users);
   const status = useSelector((state) => state.entries.fetchStatus);
 
-  // const navigate = useNavigate();
+  const isUserExist = users?.some((user) => user.username === username);
 
-  // useEffect(() => {
-  //   // If userEntries is empty, navigate to the "User Not Found" page
-  //   if (!userEntries.length) {
-  //     navigate('/profile/user-not-found');
-  //     console.log("saddas")
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // });
+  const getUsers = async () => {
+    await dispatch(getAllUsers());
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   if (!userEntries.length && status === "loading") {
     return (
       <div className="container mx-auto mt-4 width-auto">
@@ -29,7 +34,15 @@ const ProfilePage = () => {
       </div>
     );
   } else if (!userEntries.length) {
-    return <UserNotFound />;
+    if (isUserExist) {
+      return (
+        <div className="container mx-auto  width-auto">
+          <NoEntriesComponent />{" "}
+        </div>
+      );
+    }
+    return       <div className="container mx-auto mt-4 width-auto">
+    <UserNotFound /> </div>
   }
 
   return (

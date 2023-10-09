@@ -1,11 +1,9 @@
 import React from 'react';
 
-function UserNotFound() {
-
-
+function NoEntriesComponent() {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <div className="bg-red-500 text-white rounded-full p-4">
+      <div className="bg-orange-300  text-white rounded-full p-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-16 w-16"
@@ -27,15 +25,14 @@ function UserNotFound() {
           />
         </svg>
       </div>
-      <h2 className="text-3xl font-semibold text-red-600 mt-6">
-        User Not Found
+      <h2 className="text-3xl font-semibold text-black mt-6">
+        User hasn't posted any entry
       </h2>
       <p className="text-gray-600 text-lg mt-2">
-      We couldn't find the user you're looking for.
-
-</p>
+        It looks like this user hasn't shared any entries yet.
+      </p>
     </div>
   );
 }
 
-export default UserNotFound;
+export default NoEntriesComponent;
