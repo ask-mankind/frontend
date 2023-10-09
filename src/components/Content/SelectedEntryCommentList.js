@@ -1,26 +1,16 @@
 import { FaThumbsUp } from 'react-icons/fa'; // You can use react-icons for like/dislike icons
 import { useState } from 'react';
 import SelectedEntryComment from './SelectedEntryComment';
+import { useDispatch } from 'react-redux';
+import { getCommentsFromEntry } from '../../store/comments'; 
 
-const SelectedEntryComments = ({entry}) => {
+const SelectedEntryComments = ({comments}) => {
 
-    const [liked, setLiked] = useState(false);
-    const [disliked, setDisliked] = useState(false);
-  
-    const handleLike = () => {
-      if (disliked) {
-        setDisliked(false);
-      }
-      setLiked(!liked);
-    };
-
-
-    const comments = entry.comments
 
   
   
     return (
-      comments.map ( comment => <SelectedEntryComment comment={comment}/>)
+      comments.map ( comment => <SelectedEntryComment comment={comment} />)
     );
      
   };

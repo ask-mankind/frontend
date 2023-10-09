@@ -11,7 +11,6 @@ import { useRef } from "react";
 import { toast } from "react-toastify";
 
 const Entry = ({ entry, currentPage }) => {
-  
   const dispatch = useDispatch();
 
   const [likes, setLikes] = useState([]);
@@ -20,30 +19,28 @@ const Entry = ({ entry, currentPage }) => {
     try {
       const action = await dispatch(getLikesFromEntry(entry._id));
       const currentLikes = action.payload; // Access the payload
-      setLikes(currentLikes)
+      setLikes(currentLikes);
     } catch (error) {
       // Handle any errors that occur during the dispatch
       console.error("Error fetching likes:", error);
     }
   };
 
-
   const user = JSON.parse(localStorage.getItem("ahkUser"));
 
   const isUserLiked = likes.some((like) => like.user === user?._id);
 
-
-  const handleLike = async() => {
-    if(!user){
-      toast.error("You have to login for liking entries")
-      return
+  const handleLike = async () => {
+    if (!user) {
+      toast.error("You have to login for liking entries");
+      return;
     }
     if (isUserLiked) {
-      await dispatch(unLikeEntry(entry._id)); 
-       fetchLikes()
+      await dispatch(unLikeEntry(entry._id));
+      fetchLikes();
     } else {
-      await dispatch(likeEntry(entry._id)); 
-       fetchLikes()
+      await dispatch(likeEntry(entry._id));
+      fetchLikes();
     }
   };
 
@@ -54,11 +51,10 @@ const Entry = ({ entry, currentPage }) => {
   const handleTagClick = () => {
     console.log(user);
   };
-  
+
   useEffect(() => {
     fetchLikes();
-  },[]);
-    
+  }, []);
 
   return (
     <>
@@ -71,8 +67,10 @@ const Entry = ({ entry, currentPage }) => {
             <div className="flex items-center">
               <span className="mr-2 mb-4 text-gray-500">{likes.length}</span>
               <button
-                className={!isUserLiked ? "mr-2 mb-4 text-gray-500 hover:text-blue-500 ":"mr-2 mb-4 text-blue-500"
-                   
+                className={
+                  !isUserLiked
+                    ? "mr-2 mb-4 text-gray-500 hover:text-blue-500 "
+                    : "mr-2 mb-4 text-blue-500"
                 }
                 onClick={handleLike}
               >
@@ -81,12 +79,12 @@ const Entry = ({ entry, currentPage }) => {
             </div>
             <Comment comments={entry?.comments} />
             <div className="flex justify-between">
-              <div className="flex ml-1">
+              <div className="flex items-center ml-1">
                 {entry?.tags.map((tag) => (
                   <div
                     key={tag._id}
                     onClick={() => handleTagClick()}
-                    className="text-blue-500 text-md hover:cursor-pointer hover:underline mr-1"
+                    className="inline-block bg-lilac text-white text-sm font-semibold py-1 px-2 rounded-full mr-1 "
                   >
                     {tag.name}
                   </div>

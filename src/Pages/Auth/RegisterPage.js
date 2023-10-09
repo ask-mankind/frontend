@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { registerUser } from "../../store/auth";
+import { registerUser, setRegisterStatus } from "../../store/auth";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+
 const RegisterPage = () => {
   const [fullName, setFullName] = useState("");
   const [userName, setUserName] = useState("");
@@ -13,7 +15,7 @@ const RegisterPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const status = useSelector((state) => state.auth.loginStatus);
+  const status = useSelector((state) => state.auth.registerStatus);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,10 +33,17 @@ const RegisterPage = () => {
         password: password,
       })
     );
+  };
+
+  useEffect(() => {
     if (status === "succeeded") {
       navigate("/");
+      dispatch(setRegisterStatus("stable"));
+      window.location.reload()
+
     }
-  };
+  }, [status, navigate, dispatch]);
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-lilac py-12 px-4 sm:px-6 lg:px-8">

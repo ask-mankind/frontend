@@ -25,6 +25,19 @@ export const postComment = createAsyncThunk('comments/postComment', async (comme
       toast.error("Session Expired. You Have To Login Again")
   }
   });
+  export const getCommentsFromEntry = createAsyncThunk('comments/getCommentsFromEntry', async (entryId) => {
+    console.log(entryId)
+    try {
+      const response = await axios.get(`http://localhost:5000/api/entries/${entryId}/comments`, {
+        entryId:entryId,
+      });
+  
+      return response.data;
+    } catch (error) {
+      throw error;
+  }
+  });
+
   
 const commentsSlice = createSlice({
   name: 'comments',

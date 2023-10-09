@@ -18,9 +18,9 @@ const Header = ({ onSearchInputChange }) => {
 
   const navigate = useNavigate()
 
-const logOut = () => {
-dispatch(logoutUser())
-navigate("/")
+const logOut = async() => {
+await dispatch(logoutUser())
+navigate("/login")
 
 }
 

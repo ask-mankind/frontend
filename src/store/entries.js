@@ -30,6 +30,7 @@ export const postEntry = createAsyncThunk('entries/postEntry', async (newEntryDa
   } catch (error) {
     if(error.response.data.error==="Unauthorized")
     toast.error("Session Expired. You Have To Login Again")
+    
 }
 });
 

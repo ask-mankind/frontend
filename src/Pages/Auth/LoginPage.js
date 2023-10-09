@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, redirect, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../store/auth";
+import { setLoginStatus, setUser } from "../../store/auth";
 import { loginUser } from "../../store/auth";
-
+import { useEffect } from "react";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -16,10 +16,16 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await dispatch(loginUser({ username: username, password: password }));
+  };
+
+  useEffect(() => {
     if (status === "succeeded") {
       navigate("/");
+      dispatch(setLoginStatus("stable"));
+      window.location.reload()
     }
-  };
+  }, [status, navigate, dispatch]);
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-lilac py-12 px-4 sm:px-6 lg:px-8">

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { getAuthToken } from "../../utils/authentication";
 import { useNavigate } from "react-router-dom";
 
-const MakeComment = ({ entry }) => {
+const MakeComment = ({ entry ,onFetchComments}) => {
   const [isCommenting, setIsCommenting] = useState(false);
   const [commentText, setCommentText] = useState("");
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const MakeComment = ({ entry }) => {
 
 
 
-  const handleSaveComment = () => {
+  const handleSaveComment = async() => {
     // Create a new comment object
     const commentData = {
       entryId: entry._id,
@@ -39,11 +39,12 @@ const MakeComment = ({ entry }) => {
     };
 
     // Dispatch the action to add the new comment to Redux state
-    dispatch(postComment(commentData));
+    await dispatch(postComment(commentData));
 
     // Clear the comment input and close the comment area
     setCommentText("");
     setIsCommenting(false);
+    await onFetchComments()
   };
 
   return (

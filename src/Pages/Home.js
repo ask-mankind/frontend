@@ -4,10 +4,15 @@ import Navbar from "../components/Navbar";
 import { Outlet } from "react-router";
 import AddEntryButton from "../components/AddEntryButton";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchEntries } from "../store/entries";
 const Home = () => {
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    console.log(localStorage.getItem("ahkUser"))
-  });
+    //[Dispatch the fetchEntries action when the component mounts
+     dispatch(fetchEntries());
+  }, );
 
 
   return (
