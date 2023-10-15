@@ -3,34 +3,33 @@ import { FaSearch } from "react-icons/fa"; // Import the search icon from a pack
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setUser } from "../store/auth";
 import { useState } from "react";
 import { setFilteredEntries } from "../store/entries";
 import { logoutUser } from "../store/auth";
 import { getAuthUser } from "../utils/authentication";
-import { useEffect } from "react";
 const Header = ({ onSearchInputChange }) => {
-  
-  const user = getAuthUser()
+  const user = getAuthUser();
 
-  const dispatch = useDispatch()
-  const token = localStorage.getItem("token")
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-const logOut = async() => {
-await dispatch(logoutUser())
-navigate("/login")
-
-}
+  const logOut = async () => {
+    await dispatch(logoutUser());
+    navigate("/login");
+  };
 
   let rigthSideOfHeader = (
     <div>
       <Link to="/register" className="text-white hover:underline mr-4">
         Register
       </Link>
-      <Link to="/login" className="text-white hover:underline">
+      <Link to="/login" className="text-white hover:underline mr-4">
         Login
+      </Link>
+      <Link to={`/contact`} className="text-white hover:underline mr-4">
+        Contact Us
       </Link>
     </div>
   );
@@ -38,50 +37,58 @@ navigate("/login")
   if (token) {
     rigthSideOfHeader = (
       <div>
-        <div className="text-white mr-4 mb-2 text-center">Welcome, {user?.fullname}</div>
-        <Link to={`/profile/${user?.username}`} className="text-white hover:underline mr-4">
-           Profile
+        <div className="text-white mr-4 mb-2 text-center">
+          Welcome, {user?.fullname}
+        </div>
+        <Link
+          to={`/profile/${user?.username}`}
+          className="text-white hover:underline mr-4"
+        >
+          Profile
         </Link>
-        <button className="mr-4" onClick={logOut}>Logout</button>
-        <Link to={`/profile/${user?.username}/settings`} className="text-white hover:underline mr-4">
-           Settings
+        <button className="mr-4" onClick={logOut}>
+          Logout
+        </button>
+        <Link
+          to={`/profile/${user?.username}/settings`}
+          className="text-white hover:underline mr-4"
+        >
+          Settings
         </Link>
-
+        <Link to={`/contact`} className="text-white hover:underline mr-4">
+          Contact Us
+        </Link>
       </div>
     );
   }
 
-  const entryData = useSelector(state => state.entries.entries);
-  const [searchQuery, setSearchQuery] = useState('');
+  const entryData = useSelector((state) => state.entries.entries);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  
   const handleSearchInputChange = (event) => {
     const newSearchQuery = event.target.value;
 
-    let filteredEntries = entryData.filter(entry =>
+    let filteredEntries = entryData.filter((entry) =>
       entry.content.toLowerCase().includes(newSearchQuery.toLowerCase())
-    ); 
-  
-    if(searchQuery != null && filteredEntries[0]==null){
-      filteredEntries = [{
-        content: "Not Found",
-        _id:Date.now(),
-        author:{
-          username:"not found",
-          _id:"not found"
+    );
+
+    if (searchQuery != null && filteredEntries[0] == null) {
+      filteredEntries = [
+        {
+          content: "Not Found",
+          _id: Date.now(),
+          author: {
+            username: "not found",
+            _id: "not found",
+          },
+          tags: [{ name: "not found" }],
+          comments: [],
         },
-        tags:[
-          {name:"not found"}
-        ],
-        comments:[],
-
-
-      },]
+      ];
     }
     setSearchQuery(newSearchQuery);
     console.log(newSearchQuery); // Use the updated value directly
     dispatch(setFilteredEntries(filteredEntries));
-
   };
 
   return (
@@ -100,7 +107,7 @@ navigate("/login")
         </div>
 
         {/* Search Box */}
-       <div className="relative">
+        <div className="relative">
           <input
             type="text"
             value={searchQuery}

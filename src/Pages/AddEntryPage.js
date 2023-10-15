@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setEntries } from "../store/entries";
 import { useNavigate } from "react-router-dom";
 import { postEntry } from "../store/entries";
-import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { checkAuthLoader, getAuthToken } from "../utils/authentication";
+import { getAuthToken } from "../utils/authentication";
 
 const AddEntryPage = () => {
   const [title, setTitle] = useState("");
@@ -19,8 +17,6 @@ const AddEntryPage = () => {
   const handleTagsChange = (e) => {
     setTags(e.target.value);
   };
-  const user = useSelector((state) => state.user);
-
   const navigate = useNavigate();
 
   useEffect(() => {

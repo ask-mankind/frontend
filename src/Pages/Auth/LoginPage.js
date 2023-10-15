@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoginStatus, setUser } from "../../store/auth";
+import { setLoginStatus } from "../../store/auth";
 import { loginUser } from "../../store/auth";
 import { useEffect } from "react";
 const LoginPage = () => {

@@ -1,9 +1,6 @@
 import SelectedEntry from "../components/Content/SelectedEntry";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { fetchEntries } from "../store/entries";
-import { useDispatch } from "react-redux";
 import LoadingComponent from "../components/Loading";
 import EntryNotFound from "../components/EntryNotFound";
 

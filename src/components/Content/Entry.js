@@ -3,11 +3,10 @@ import { useState } from "react";
 import Comment from "./Comment";
 import { Link } from "react-router-dom";
 import { deleteEntry } from "../../store/entries";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { likeEntry, unLikeEntry } from "../../store/likes";
 import { useEffect } from "react";
 import { getLikesFromEntry } from "../../store/likes";
-import { useRef } from "react";
 import { toast } from "react-toastify";
 
 const Entry = ({ entry, currentPage }) => {

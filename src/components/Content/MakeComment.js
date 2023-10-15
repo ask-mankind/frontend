@@ -1,9 +1,7 @@
 import React from "react";
-
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { postComment } from "../../store/comments";
-import { useEffect } from "react";
 import { getAuthToken } from "../../utils/authentication";
 import { useNavigate } from "react-router-dom";
 

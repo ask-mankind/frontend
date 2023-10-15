@@ -1,16 +1,5 @@
-import { FaThumbsUp } from "react-icons/fa"; // You can use react-icons for like/dislike icons
-import { useState } from "react";
 
 const Comment = ({ comments }) => {
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
-
-  const handleLike = () => {
-    if (disliked) {
-      setDisliked(false);
-    }
-    setLiked(!liked);
-  };
 
   // useEffect(() => {
   //   console.log(comments[0]?.title)

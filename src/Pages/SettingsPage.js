@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../store/users';
-import { logoutUser } from '../store/auth';
 import { useNavigate } from 'react-router-dom';
 
 const SettingsPage = () => {
